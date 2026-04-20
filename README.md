@@ -6,12 +6,12 @@
 
 ## 🌟 Funcionalidades
 
-- [] **Ecossistema Multi-plataforma:** - 📱 Mobile: App nativo para Android/iOS (React Native + Expo).
-  - 💻 Desktop: Interface moderna para Windows, Linux (Arch Linux optimized) e macOS (Electron + React).
-- [] **Transferência P2P Inteligente:** Uso de WebRTC para envio direto entre aparelhos na mesma rede (ou via STUN/TURN em redes distintas), garantindo privacidade e velocidade.
-- [] **Nuvem Pessoal:** Opção de armazenamento centralizado para acesso a arquivos mesmo quando o dispositivo de origem está offline.
-- [] **Histórico Completo:** Registro detalhado de todas as transferências realizadas entre seus dispositivos vinculados.
-- [] **Criptografia de Ponta a Ponta:** Segurança nativa via protocolos DTLS/SRTP do WebRTC.
+- [ ] **Ecossistema Multi-plataforma:** - 📱 Mobile: App nativo para Android/iOS (React Native + Expo).
+- [ ] 💻 Desktop: Interface moderna para Windows, Linux (Arch Linux optimized) e macOS (Electron + React).
+- [ ] **Transferência P2P Inteligente:** Uso de WebRTC para envio direto entre aparelhos na mesma rede (ou via STUN/TURN em redes distintas), garantindo privacidade e velocidade.
+- [ ] **Nuvem Pessoal:** Opção de armazenamento centralizado para acesso a arquivos mesmo quando o dispositivo de origem está offline.
+- [ ] **Histórico Completo:** Registro detalhado de todas as transferências realizadas entre seus dispositivos vinculados.
+- [ ] **Criptografia de Ponta a Ponta:** Segurança nativa via protocolos DTLS/SRTP do WebRTC.
 
 ---
 
