@@ -63,3 +63,5 @@ volumes
 
 .ia
 .zed
+
+/generated/prisma

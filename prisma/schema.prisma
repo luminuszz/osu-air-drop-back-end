@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/modules/prisma/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  devices Device[]
+  files   File[]
+}
+
+// 2. Os Aparelhos Vinculados
+model Device {
+  id           String     @id @default(uuid())
+  name         String
+  type         DeviceType
+  isOnline     Boolean    @default(false)
+  lastActiveAt DateTime   @updatedAt
+  createdAt    DateTime   @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  filesSent File[] @relation("FilesSentByDevice")
+}
+
+model File {
+  id           String @id @default(uuid())
+  originalName String
+  mimeType     String
+  size         Int
+  storagePath  String
+
+  createdAt DateTime @default(now())
+  isDeleted Boolean  @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender   Device @relation("FilesSentByDevice", fields: [senderId], references: [id])
+}
+
+enum DeviceType {
+  DESKTOP
+  MOBILE
+  TABLET
+}
