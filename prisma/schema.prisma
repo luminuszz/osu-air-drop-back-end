@@ -18,7 +18,6 @@ model User {
   files   File[]
 }
 
-// 2. Os Aparelhos Vinculados
 model Device {
   id           String     @id @default(uuid())
   name         String
