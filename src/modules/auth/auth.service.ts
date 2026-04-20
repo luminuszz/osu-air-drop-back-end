@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { User } from "../prisma/generated/browser";
 import { UsersService } from "../users/users.service";
 import { UserTokenDecoded } from "./dto";
 
@@ -20,16 +21,30 @@ export class AuthService {
 			throw new BadRequestException("Invalid credentials");
 		}
 
+		const accessToken = await this.generateAccessTokenByUser(user);
+
+		return { accessToken };
+	}
+
+	async generateAccessTokenByUser(user: User) {
 		const payload = {
 			email: user.email,
 			id: user.id,
 			name: user.email,
 		} satisfies UserTokenDecoded;
 
-		const accessToken = await this.jwtService.signAsync(
-			JSON.stringify(payload),
-		);
+		const token = await this.jwtService.signAsync(JSON.stringify(payload));
 
-		return { accessToken };
+		return token;
+	}
+
+	async generateAccessTokenByUserId(userId: string) {
+		const payload = {
+			id: userId,
+		};
+
+		const token = await this.jwtService.signAsync(JSON.stringify(payload));
+
+		return token;
 	}
 }

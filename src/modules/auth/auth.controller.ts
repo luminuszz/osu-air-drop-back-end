@@ -4,6 +4,7 @@ import { UsersService } from "../users/users.service";
 import { AuthService } from "./auth.service";
 import { IsPublic } from "./is-public.decorator";
 import { authenticateUserSchema, signupUserSchema } from "./schemas";
+import { UserDecoded } from "./user-decoded.decorator";
 
 @Controller("auth")
 export class AuthController {
@@ -35,5 +36,14 @@ export class AuthController {
 			name: body.email,
 			password: body.password,
 		});
+	}
+
+	@Post("/invite")
+	async generateInviteToken(@UserDecoded("id") userId: string) {
+		const token = await this.authService.generateAccessTokenByUserId(userId);
+
+		return {
+			inviteToken: token,
+		};
 	}
 }
