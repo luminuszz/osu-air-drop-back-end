@@ -14,14 +14,37 @@ COPY --link prisma ./prisma
 
 RUN pnpm install --frozen-lockfile
 
+RUN pnpm prisma generate
+
 
 FROM base AS development
+
+ENV NODE_ENV=development
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --link prisma tsconfig.json tsconfig.build.json package.json ./
 COPY --link ./nest-cli.json ./
 COPY src ./src
 
-RUN pnpm prisma generate
-
 CMD ["pnpm", "run", "start:debug"]
+
+
+FROM base AS production
+
+ENV NODE_ENV=production
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --link prisma tsconfig.json tsconfig.build.json package.json ./
+COPY --link ./nest-cli.json ./
+COPY src ./src
+
+RUN pnpm prune --prod
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
+
+EXPOSE 3000
+
+
+CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
