@@ -39,7 +39,7 @@ export class FilesService {
 			data: {
 				mimeType: fileMeta.fileType,
 				senderId: deviceId,
-				storagePath: "",
+				storagePath: "r2-bucket",
 				userId,
 				originalName: originalName ?? fileId,
 				size: fileMeta.size,

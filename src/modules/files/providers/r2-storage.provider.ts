@@ -12,6 +12,22 @@ import { StorageProvider, UploadUrlParams } from "./storage.provider";
 export class R2StorageProvider implements StorageProvider, OnModuleInit {
 	constructor(private readonly env: ConfigService) {}
 
+	private s3Client: S3Client;
+	private bucketName: string;
+
+	onModuleInit() {
+		this.bucketName = this.env.getOrThrow<string>("R2_BUCKER_NAME");
+
+		this.s3Client = new S3Client({
+			region: "auto",
+			endpoint: this.env.getOrThrow<string>("R2_STORAGE_URL"),
+			credentials: {
+				accessKeyId: this.env.getOrThrow<string>("R2_STORAGE_KEY"),
+				secretAccessKey: this.env.getOrThrow<string>("R2_STORAGE_SECRET_KEY"),
+			},
+		});
+	}
+
 	async getFileMetadata(
 		fileId: string,
 	): Promise<{ fileType: string; fileId: string; size: number }> {
@@ -28,22 +44,6 @@ export class R2StorageProvider implements StorageProvider, OnModuleInit {
 			fileId,
 			size: ContentLength ?? 0,
 		};
-	}
-
-	private s3Client: S3Client;
-	private bucketName: string;
-
-	onModuleInit() {
-		this.bucketName = this.env.getOrThrow<string>("R2_BUCKER_NAME");
-
-		this.s3Client = new S3Client({
-			region: "auto",
-			endpoint: this.env.getOrThrow<string>("R2_STORAGE_URL"),
-			credentials: {
-				accessKeyId: this.env.getOrThrow<string>("R2_STORAGE_KEY"),
-				secretAccessKey: this.env.getOrThrow<string>("R2_STORAGE_SECRET_KEY"),
-			},
-		});
 	}
 
 	async generateUploadUrl(fileMeta: UploadUrlParams) {
