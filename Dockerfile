@@ -3,7 +3,11 @@ FROM node:${NODE_VERSION}-slim AS base
 
 RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
 
-RUN apt-get update -y && apt-get install -y openssl
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y dumb-init openssl procps && \
+    rm -rf /var/lib/apt/lists/*
+
+
 
 
 RUN  corepack enable pnpm
@@ -36,6 +40,13 @@ FROM base AS production
 
 ENV NODE_ENV=production
 
+RUN useradd --user-group --create-home --shell /bin/false appuser
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
+
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY --link prisma tsconfig.json tsconfig.build.json package.json ./
 COPY --link ./nest-cli.json ./
@@ -44,6 +55,5 @@ COPY src ./src
 RUN pnpm prune --prod
 
 EXPOSE 3000
-
 
 CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
