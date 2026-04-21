@@ -52,6 +52,8 @@ COPY --link prisma tsconfig.json tsconfig.build.json package.json ./
 COPY --link ./nest-cli.json ./
 COPY src ./src
 
+ENV CI="true"
+
 RUN pnpm prune --prod
 
 EXPOSE 3000
