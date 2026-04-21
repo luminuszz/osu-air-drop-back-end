@@ -48,6 +48,8 @@ COPY src ./src
 
 ENV CI="true"
 
+RUN pnpm run build
+
 RUN pnpm prune --prod
 
 EXPOSE 3000
