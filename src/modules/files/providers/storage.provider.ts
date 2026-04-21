@@ -12,7 +12,9 @@ export abstract class StorageProvider {
 
 	abstract generateDownloadUrl(fileId: string): Promise<string>;
 
-	abstract getFileMetadata(
-		fileId: string,
-	): Promise<{ fileType: string; fileId: string; size: number }>;
+	abstract getFileMetadata(fileId: string): Promise<{
+		fileType: string;
+		fileId: string;
+		size: number;
+	}>;
 }

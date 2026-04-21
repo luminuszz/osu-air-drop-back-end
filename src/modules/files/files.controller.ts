@@ -41,6 +41,7 @@ export class FilesController {
 		const results = await this.filesService.confirmUpload(
 			body.fileId,
 			userId,
+			body.deviceId,
 			body.originalFilename,
 		);
 
@@ -51,8 +52,7 @@ export class FilesController {
 		};
 	}
 
-	x;
-	@Get("download/:fileId")
+	@Get("/download/:fileId")
 	async getDownloadUrl(@Param("fileId") fileId: string) {
 		const url = await this.filesService.getDownloadUrl(fileId);
 

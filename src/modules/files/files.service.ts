@@ -39,7 +39,7 @@ export class FilesService {
 			data: {
 				mimeType: fileMeta.fileType,
 				senderId: deviceId,
-				storagePath: "r2-bucket",
+				storagePath: fileId,
 				userId,
 				originalName: originalName ?? fileId,
 				size: fileMeta.size,
@@ -52,8 +52,20 @@ export class FilesService {
 		return file;
 	}
 
-	async getDownloadUrl(fileId: string) {
-		const url = await this.storageProvider.generateDownloadUrl(fileId);
+	async getDownloadUrl(id: string) {
+		const file = await this.prisma.file.findUnique({
+			where: {
+				id,
+			},
+		});
+
+		if (!file) {
+			throw new BadRequestException("File not found");
+		}
+
+		const url = await this.storageProvider.generateDownloadUrl(
+			file.storagePath,
+		);
 
 		return url;
 	}
