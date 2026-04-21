@@ -51,6 +51,5 @@ RUN pnpm run build
 
 EXPOSE 3000
 
-RUN chown -R appuser:appuser /app
 
 CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
