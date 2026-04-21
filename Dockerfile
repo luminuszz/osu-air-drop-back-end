@@ -45,6 +45,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --link prisma tsconfig.json tsconfig.build.json package.json ./
 COPY --link ./nest-cli.json ./
 COPY --link ./prisma.config.ts ./
+COPY --link prisma  ./prisma
 COPY src ./src
 
 ENV CI="true"
