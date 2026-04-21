@@ -19,6 +19,8 @@ export class DevicesService {
 			data.paringToken,
 		);
 
+		console.log({ userId });
+
 		const existsUser = await this.usersService.findUserById(userId);
 
 		if (!existsUser) {

@@ -12,15 +12,17 @@ import { AuthGuard } from "./auth-token.guard";
 		UsersModule,
 		JwtModule.registerAsync({
 			inject: [ConfigService],
-			useFactory: (env: ConfigService) => ({
-				secret: env.get("JWT_SECRET"),
-				signOptions: { expiresIn: "10d" },
-			}),
+			useFactory: (env: ConfigService) => {
+				return {
+					secret: env.get("JWT_SECRET"),
+					signOptions: { expiresIn: "30d" },
+				};
+			},
 		}),
 	],
 
-	providers: [AuthService, AuthGuard, JwtService],
-	exports: [AuthService, AuthGuard, JwtService],
+	providers: [AuthService, AuthGuard],
+	exports: [AuthService, AuthGuard],
 	controllers: [AuthController],
 })
 export class AuthModule {}

@@ -33,17 +33,17 @@ export class AuthService {
 			name: user.email,
 		} satisfies UserTokenDecoded;
 
-		const token = await this.jwtService.signAsync(JSON.stringify(payload));
+		const token = await this.jwtService.signAsync(payload);
 
 		return token;
 	}
 
 	async generateAccessTokenByUserId(userId: string) {
 		const payload = {
-			id: userId,
+			userId,
 		};
 
-		const token = await this.jwtService.signAsync(JSON.stringify(payload));
+		const token = await this.jwtService.signAsync(payload);
 
 		return token;
 	}

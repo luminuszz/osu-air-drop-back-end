@@ -13,6 +13,7 @@ export class AuthController {
 		private readonly usersService: UsersService,
 	) {}
 
+	@IsPublic()
 	@Post("signin")
 	async login(
 		@Body(new ZodValidationPipe(authenticateUserSchema)) body: {
@@ -29,11 +30,12 @@ export class AuthController {
 		@Body(new ZodValidationPipe(signupUserSchema)) body: {
 			email: string;
 			password: string;
+			name: string;
 		},
 	) {
 		await this.usersService.createUser({
-			email: body.password,
-			name: body.email,
+			email: body.email,
+			name: body.name,
 			password: body.password,
 		});
 	}
