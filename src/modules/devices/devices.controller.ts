@@ -16,14 +16,17 @@ export class DevicesController {
 			typeof makePairSchema
 		>,
 	) {
-		const { accessToken } = await this.devicesService.createDevice({
-			name: body.name,
-			type: body.type,
-			paringToken: body.paringToken,
-		});
+		const { accessToken, deviceId, deviceName } =
+			await this.devicesService.createDevice({
+				name: body.name,
+				type: body.type,
+				paringToken: body.paringToken,
+			});
 
 		return {
 			accessToken,
+			deviceId,
+			deviceName,
 		};
 	}
 }

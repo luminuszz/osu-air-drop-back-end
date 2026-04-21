@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ZodValidationPipe } from "src/core/zod/zod-validation.pipe";
 import { UsersService } from "../users/users.service";
 import { AuthService } from "./auth.service";
@@ -40,7 +40,7 @@ export class AuthController {
 		});
 	}
 
-	@Post("/invite")
+	@Get("/invite")
 	async generateInviteToken(@UserDecoded("id") userId: string) {
 		const token = await this.authService.generateAccessTokenByUserId(userId);
 

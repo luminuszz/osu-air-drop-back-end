@@ -14,7 +14,7 @@ export class DevicesService {
 		private readonly authService: AuthService,
 	) {}
 
-	async createDevice(data: CreateDeviceDto): Promise<{ accessToken: string }> {
+	async createDevice(data: CreateDeviceDto) {
 		const { userId } = await this.jwtService.verifyAsync<{ userId: string }>(
 			data.paringToken,
 		);
@@ -27,37 +27,25 @@ export class DevicesService {
 			throw new BadRequestException("User not found");
 		}
 
-		const existsDevice = await this.prisma.device.findFirst({
-			where: {
+		const deviceCreated = await this.prisma.device.create({
+			data: {
 				name: data.name,
 				type: data.type,
+				userId,
+			},
+			select: {
+				name: true,
+				id: true,
 			},
 		});
-
-		if (existsDevice) {
-			await this.prisma.device.update({
-				where: {
-					id: existsDevice.id,
-				},
-				data: {
-					userId,
-				},
-			});
-		} else {
-			await this.prisma.device.create({
-				data: {
-					name: data.name,
-					type: data.type,
-					userId,
-				},
-			});
-		}
 
 		const accessToken =
 			await this.authService.generateAccessTokenByUser(existsUser);
 
 		return {
 			accessToken,
+			deviceId: deviceCreated.id,
+			deviceName: deviceCreated.name,
 		};
 	}
 
