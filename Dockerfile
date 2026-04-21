@@ -40,10 +40,6 @@ COPY src ./src
 
 RUN pnpm prune --prod
 
-RUN chown -R appuser:appuser /app
-
-USER appuser
-
 EXPOSE 3000
 
 
