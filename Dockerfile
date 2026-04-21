@@ -40,12 +40,6 @@ FROM base AS production
 
 ENV NODE_ENV=production
 
-RUN useradd --user-group --create-home --shell /bin/false appuser
-
-RUN chown -R appuser:appuser /app
-
-USER appuser
-
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --link prisma tsconfig.json tsconfig.build.json package.json ./
@@ -57,5 +51,12 @@ ENV CI="true"
 RUN pnpm prune --prod
 
 EXPOSE 3000
+
+RUN useradd --user-group --create-home --shell /bin/false appuser
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
+
 
 CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
