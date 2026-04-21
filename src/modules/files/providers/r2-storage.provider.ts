@@ -17,7 +17,6 @@ export class R2StorageProvider implements StorageProvider, OnModuleInit {
 
 	onModuleInit() {
 		this.bucketName = this.env.getOrThrow<string>("R2_BUCKER_NAME");
-
 		this.s3Client = new S3Client({
 			region: "auto",
 			endpoint: this.env.getOrThrow<string>("R2_STORAGE_URL"),

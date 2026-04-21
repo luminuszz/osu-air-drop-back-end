@@ -6,10 +6,11 @@ import { StorageProvider } from "./providers/storage.provider";
 
 @Module({
 	providers: [
+		{ provide: StorageProvider, useExisting: R2StorageProvider },
 		FilesService,
 		R2StorageProvider,
-		{ provide: StorageProvider, useExisting: R2StorageProvider },
 	],
 	controllers: [FilesController],
+	exports: [StorageProvider],
 })
 export class FilesModule {}
