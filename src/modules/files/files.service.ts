@@ -82,6 +82,7 @@ export class FilesService {
 			mimeType: item.mimeType,
 			size: item.size,
 			sender: item.sender,
+			createdAt: item.createdAt,
 		}));
 	}
 }
