@@ -74,6 +74,9 @@ export class FilesService {
 		const userFiles = await this.prisma.file.findMany({
 			where: { userId },
 			include: { sender: true },
+			orderBy: {
+				createdAt: "desc",
+			},
 		});
 
 		return userFiles.map((item) => ({
