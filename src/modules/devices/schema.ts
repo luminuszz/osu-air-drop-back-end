@@ -6,3 +6,7 @@ export const makePairSchema = z.object({
 	name: z.string(),
 	paringToken: z.jwt(),
 });
+
+export const createDeviceSchema = makePairSchema.omit({ paringToken: true });
+
+export type CreateDeviceSchema = z.infer<typeof createDeviceSchema>;

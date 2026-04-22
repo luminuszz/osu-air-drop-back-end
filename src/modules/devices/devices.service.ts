@@ -3,7 +3,7 @@ import { JwtService } from "@nestjs/jwt";
 import { AuthService } from "../auth/auth.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { UsersService } from "../users/users.service";
-import { CreateDeviceDto } from "./dto";
+import { CreateDeviceDto, PairDeviceDto } from "./dto";
 
 @Injectable()
 export class DevicesService {
@@ -15,6 +15,32 @@ export class DevicesService {
 	) {}
 
 	async createDevice(data: CreateDeviceDto) {
+		const device = await this.prisma.device.findFirst({
+			where: { name: data.name },
+		});
+
+		if (device) {
+			return {
+				deviceId: device.id,
+				deviceName: device.name,
+			};
+		}
+
+		const deviceCreated = await this.prisma.device.create({
+			data: {
+				name: data.name,
+				type: data.type,
+				userId: data.userId,
+			},
+		});
+
+		return {
+			deviceId: deviceCreated.id,
+			deviceName: deviceCreated.name,
+		};
+	}
+
+	async pairDevice(data: PairDeviceDto) {
 		const { userId } = await this.jwtService.verifyAsync<{ userId: string }>(
 			data.paringToken,
 		);
