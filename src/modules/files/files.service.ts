@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
+import { EventsGateway } from "../events/events.gateway";
 import { PrismaService } from "../prisma/prisma.service";
 import { UploadFileDto } from "./dto";
 import { StorageProvider } from "./providers/storage.provider";
@@ -8,6 +9,7 @@ export class FilesService {
 	constructor(
 		private readonly storageProvider: StorageProvider,
 		private readonly prisma: PrismaService,
+		private readonly eventsGateway: EventsGateway,
 	) {}
 
 	async makeUploadFileRequest(data: UploadFileDto) {
@@ -48,6 +50,8 @@ export class FilesService {
 				sender: true,
 			},
 		});
+
+		this.eventsGateway.notifyNewFileUploaded(userId, file.id);
 
 		return file;
 	}

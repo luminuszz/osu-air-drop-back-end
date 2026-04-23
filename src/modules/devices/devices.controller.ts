@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ZodValidationPipe } from "src/core/zod/zod-validation.pipe";
 import z from "zod";
 import { IsPublic } from "../auth/is-public.decorator";
@@ -13,6 +13,13 @@ import {
 @Controller("devices")
 export class DevicesController {
 	constructor(private readonly devicesService: DevicesService) {}
+
+	@Get("")
+	async fetchUserDevices(@UserDecoded("id") userId: string) {
+		const devices = await this.devicesService.fetchDevicesByUserId(userId);
+
+		return devices;
+	}
 
 	@Post("")
 	async createDevice(

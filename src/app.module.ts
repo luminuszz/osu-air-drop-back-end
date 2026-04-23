@@ -5,6 +5,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./modules/auth/auth.module";
 import { AuthGuard } from "./modules/auth/auth-token.guard";
 import { DeviceModules } from "./modules/devices/devices.module";
+import { EventsModule } from "./modules/events/events.module";
 import { FilesModule } from "./modules/files/files.module";
 import { PrismaModule } from "./modules/prisma/prisma.module";
 import { UsersModule } from "./modules/users/users.module";
@@ -29,6 +30,7 @@ import { UsersModule } from "./modules/users/users.module";
 		UsersModule,
 		DeviceModules,
 		FilesModule,
+		EventsModule,
 	],
 	controllers: [],
 	providers: [

@@ -15,8 +15,14 @@ export class DevicesService {
 	) {}
 
 	async createDevice(data: CreateDeviceDto) {
+		const existsUser = await this.usersService.findUserById(data.userId);
+
+		if (!existsUser) {
+			throw new BadRequestException("User not found");
+		}
+
 		const device = await this.prisma.device.findFirst({
-			where: { name: data.name },
+			where: { name: data.name, userId: data.userId },
 		});
 
 		if (device) {
@@ -45,12 +51,25 @@ export class DevicesService {
 			data.paringToken,
 		);
 
-		console.log({ userId });
-
 		const existsUser = await this.usersService.findUserById(userId);
 
 		if (!existsUser) {
 			throw new BadRequestException("User not found");
+		}
+
+		const accessToken =
+			await this.authService.generateAccessTokenByUser(existsUser);
+
+		const existsDevice = await this.prisma.device.findFirst({
+			where: { name: data.name, userId },
+		});
+
+		if (existsDevice) {
+			return {
+				accessToken,
+				deviceId: existsDevice.id,
+				deviceName: existsDevice.name,
+			};
 		}
 
 		const deviceCreated = await this.prisma.device.create({
@@ -64,9 +83,6 @@ export class DevicesService {
 				id: true,
 			},
 		});
-
-		const accessToken =
-			await this.authService.generateAccessTokenByUser(existsUser);
 
 		return {
 			accessToken,
