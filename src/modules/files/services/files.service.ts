@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { EventsGateway } from "../events/events.gateway";
-import { PrismaService } from "../prisma/prisma.service";
-import { UploadFileDto } from "./dto";
-import { StorageProvider } from "./providers/storage.provider";
+import { EventsGateway } from "../../events/events.gateway";
+import { PrismaService } from "../../prisma/prisma.service";
+import { UploadFileDto } from "../dto";
+import { StorageProvider } from "../providers/storage.provider";
 
 @Injectable()
 export class FilesService {
@@ -37,6 +37,16 @@ export class FilesService {
 			throw new BadRequestException("File not found");
 		}
 
+		const fileAlreadyExists = await this.prisma.file.findFirst({
+			where: {
+				storagePath: fileId,
+			},
+		});
+
+		if (fileAlreadyExists) {
+			throw new BadRequestException("File already exists");
+		}
+
 		const file = await this.prisma.file.create({
 			data: {
 				mimeType: fileMeta.fileType,
@@ -56,10 +66,11 @@ export class FilesService {
 		return file;
 	}
 
-	async getDownloadUrl(id: string) {
+	async getDownloadUrl(id: string, userId: string) {
 		const file = await this.prisma.file.findUnique({
 			where: {
 				id,
+				userId,
 			},
 		});
 

@@ -14,7 +14,7 @@ import { UserTokenDecoded } from "../auth/dto";
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	@WebSocketServer()
-	server: Server;
+	private readonly server: Server;
 
 	constructor(private readonly jwtService: JwtService) {}
 

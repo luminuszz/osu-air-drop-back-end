@@ -250,6 +250,7 @@ export type FileWhereInput = {
   senderId?: Prisma.StringFilter<"File"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   sender?: Prisma.XOR<Prisma.DeviceScalarRelationFilter, Prisma.DeviceWhereInput>
+  sharedFiles?: Prisma.SharedFileListRelationFilter
 }
 
 export type FileOrderByWithRelationInput = {
@@ -264,24 +265,26 @@ export type FileOrderByWithRelationInput = {
   senderId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   sender?: Prisma.DeviceOrderByWithRelationInput
+  sharedFiles?: Prisma.SharedFileOrderByRelationAggregateInput
 }
 
 export type FileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  storagePath?: string
   AND?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
   OR?: Prisma.FileWhereInput[]
   NOT?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
   originalName?: Prisma.StringFilter<"File"> | string
   mimeType?: Prisma.StringFilter<"File"> | string
   size?: Prisma.IntFilter<"File"> | number
-  storagePath?: Prisma.StringFilter<"File"> | string
   createdAt?: Prisma.DateTimeFilter<"File"> | Date | string
   isDeleted?: Prisma.BoolFilter<"File"> | boolean
   userId?: Prisma.StringFilter<"File"> | string
   senderId?: Prisma.StringFilter<"File"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   sender?: Prisma.XOR<Prisma.DeviceScalarRelationFilter, Prisma.DeviceWhereInput>
-}, "id">
+  sharedFiles?: Prisma.SharedFileListRelationFilter
+}, "id" | "storagePath">
 
 export type FileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -325,6 +328,7 @@ export type FileCreateInput = {
   isDeleted?: boolean
   user: Prisma.UserCreateNestedOneWithoutFilesInput
   sender: Prisma.DeviceCreateNestedOneWithoutFilesSentInput
+  sharedFiles?: Prisma.SharedFileCreateNestedManyWithoutFileInput
 }
 
 export type FileUncheckedCreateInput = {
@@ -337,6 +341,7 @@ export type FileUncheckedCreateInput = {
   isDeleted?: boolean
   userId: string
   senderId: string
+  sharedFiles?: Prisma.SharedFileUncheckedCreateNestedManyWithoutFileInput
 }
 
 export type FileUpdateInput = {
@@ -349,6 +354,7 @@ export type FileUpdateInput = {
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutFilesNestedInput
   sender?: Prisma.DeviceUpdateOneRequiredWithoutFilesSentNestedInput
+  sharedFiles?: Prisma.SharedFileUpdateManyWithoutFileNestedInput
 }
 
 export type FileUncheckedUpdateInput = {
@@ -361,6 +367,7 @@ export type FileUncheckedUpdateInput = {
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   senderId?: Prisma.StringFieldUpdateOperationsInput | string
+  sharedFiles?: Prisma.SharedFileUncheckedUpdateManyWithoutFileNestedInput
 }
 
 export type FileCreateManyInput = {
@@ -449,6 +456,11 @@ export type FileMinOrderByAggregateInput = {
 
 export type FileSumOrderByAggregateInput = {
   size?: Prisma.SortOrder
+}
+
+export type FileScalarRelationFilter = {
+  is?: Prisma.FileWhereInput
+  isNot?: Prisma.FileWhereInput
 }
 
 export type FileCreateNestedManyWithoutUserInput = {
@@ -543,6 +555,20 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type FileCreateNestedOneWithoutSharedFilesInput = {
+  create?: Prisma.XOR<Prisma.FileCreateWithoutSharedFilesInput, Prisma.FileUncheckedCreateWithoutSharedFilesInput>
+  connectOrCreate?: Prisma.FileCreateOrConnectWithoutSharedFilesInput
+  connect?: Prisma.FileWhereUniqueInput
+}
+
+export type FileUpdateOneRequiredWithoutSharedFilesNestedInput = {
+  create?: Prisma.XOR<Prisma.FileCreateWithoutSharedFilesInput, Prisma.FileUncheckedCreateWithoutSharedFilesInput>
+  connectOrCreate?: Prisma.FileCreateOrConnectWithoutSharedFilesInput
+  upsert?: Prisma.FileUpsertWithoutSharedFilesInput
+  connect?: Prisma.FileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FileUpdateToOneWithWhereWithoutSharedFilesInput, Prisma.FileUpdateWithoutSharedFilesInput>, Prisma.FileUncheckedUpdateWithoutSharedFilesInput>
+}
+
 export type FileCreateWithoutUserInput = {
   id?: string
   originalName: string
@@ -552,6 +578,7 @@ export type FileCreateWithoutUserInput = {
   createdAt?: Date | string
   isDeleted?: boolean
   sender: Prisma.DeviceCreateNestedOneWithoutFilesSentInput
+  sharedFiles?: Prisma.SharedFileCreateNestedManyWithoutFileInput
 }
 
 export type FileUncheckedCreateWithoutUserInput = {
@@ -563,6 +590,7 @@ export type FileUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   isDeleted?: boolean
   senderId: string
+  sharedFiles?: Prisma.SharedFileUncheckedCreateNestedManyWithoutFileInput
 }
 
 export type FileCreateOrConnectWithoutUserInput = {
@@ -615,6 +643,7 @@ export type FileCreateWithoutSenderInput = {
   createdAt?: Date | string
   isDeleted?: boolean
   user: Prisma.UserCreateNestedOneWithoutFilesInput
+  sharedFiles?: Prisma.SharedFileCreateNestedManyWithoutFileInput
 }
 
 export type FileUncheckedCreateWithoutSenderInput = {
@@ -626,6 +655,7 @@ export type FileUncheckedCreateWithoutSenderInput = {
   createdAt?: Date | string
   isDeleted?: boolean
   userId: string
+  sharedFiles?: Prisma.SharedFileUncheckedCreateNestedManyWithoutFileInput
 }
 
 export type FileCreateOrConnectWithoutSenderInput = {
@@ -654,6 +684,70 @@ export type FileUpdateManyWithWhereWithoutSenderInput = {
   data: Prisma.XOR<Prisma.FileUpdateManyMutationInput, Prisma.FileUncheckedUpdateManyWithoutSenderInput>
 }
 
+export type FileCreateWithoutSharedFilesInput = {
+  id?: string
+  originalName: string
+  mimeType: string
+  size: number
+  storagePath: string
+  createdAt?: Date | string
+  isDeleted?: boolean
+  user: Prisma.UserCreateNestedOneWithoutFilesInput
+  sender: Prisma.DeviceCreateNestedOneWithoutFilesSentInput
+}
+
+export type FileUncheckedCreateWithoutSharedFilesInput = {
+  id?: string
+  originalName: string
+  mimeType: string
+  size: number
+  storagePath: string
+  createdAt?: Date | string
+  isDeleted?: boolean
+  userId: string
+  senderId: string
+}
+
+export type FileCreateOrConnectWithoutSharedFilesInput = {
+  where: Prisma.FileWhereUniqueInput
+  create: Prisma.XOR<Prisma.FileCreateWithoutSharedFilesInput, Prisma.FileUncheckedCreateWithoutSharedFilesInput>
+}
+
+export type FileUpsertWithoutSharedFilesInput = {
+  update: Prisma.XOR<Prisma.FileUpdateWithoutSharedFilesInput, Prisma.FileUncheckedUpdateWithoutSharedFilesInput>
+  create: Prisma.XOR<Prisma.FileCreateWithoutSharedFilesInput, Prisma.FileUncheckedCreateWithoutSharedFilesInput>
+  where?: Prisma.FileWhereInput
+}
+
+export type FileUpdateToOneWithWhereWithoutSharedFilesInput = {
+  where?: Prisma.FileWhereInput
+  data: Prisma.XOR<Prisma.FileUpdateWithoutSharedFilesInput, Prisma.FileUncheckedUpdateWithoutSharedFilesInput>
+}
+
+export type FileUpdateWithoutSharedFilesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  originalName?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  storagePath?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.UserUpdateOneRequiredWithoutFilesNestedInput
+  sender?: Prisma.DeviceUpdateOneRequiredWithoutFilesSentNestedInput
+}
+
+export type FileUncheckedUpdateWithoutSharedFilesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  originalName?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  storagePath?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  senderId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
 export type FileCreateManyUserInput = {
   id?: string
   originalName: string
@@ -674,6 +768,7 @@ export type FileUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sender?: Prisma.DeviceUpdateOneRequiredWithoutFilesSentNestedInput
+  sharedFiles?: Prisma.SharedFileUpdateManyWithoutFileNestedInput
 }
 
 export type FileUncheckedUpdateWithoutUserInput = {
@@ -685,6 +780,7 @@ export type FileUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   senderId?: Prisma.StringFieldUpdateOperationsInput | string
+  sharedFiles?: Prisma.SharedFileUncheckedUpdateManyWithoutFileNestedInput
 }
 
 export type FileUncheckedUpdateManyWithoutUserInput = {
@@ -718,6 +814,7 @@ export type FileUpdateWithoutSenderInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutFilesNestedInput
+  sharedFiles?: Prisma.SharedFileUpdateManyWithoutFileNestedInput
 }
 
 export type FileUncheckedUpdateWithoutSenderInput = {
@@ -729,6 +826,7 @@ export type FileUncheckedUpdateWithoutSenderInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  sharedFiles?: Prisma.SharedFileUncheckedUpdateManyWithoutFileNestedInput
 }
 
 export type FileUncheckedUpdateManyWithoutSenderInput = {
@@ -743,6 +841,35 @@ export type FileUncheckedUpdateManyWithoutSenderInput = {
 }
 
 
+/**
+ * Count Type FileCountOutputType
+ */
+
+export type FileCountOutputType = {
+  sharedFiles: number
+}
+
+export type FileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  sharedFiles?: boolean | FileCountOutputTypeCountSharedFilesArgs
+}
+
+/**
+ * FileCountOutputType without action
+ */
+export type FileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FileCountOutputType
+   */
+  select?: Prisma.FileCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * FileCountOutputType without action
+ */
+export type FileCountOutputTypeCountSharedFilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SharedFileWhereInput
+}
+
 
 export type FileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -756,6 +883,8 @@ export type FileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   senderId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   sender?: boolean | Prisma.DeviceDefaultArgs<ExtArgs>
+  sharedFiles?: boolean | Prisma.File$sharedFilesArgs<ExtArgs>
+  _count?: boolean | Prisma.FileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["file"]>
 
 export type FileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -802,6 +931,8 @@ export type FileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type FileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   sender?: boolean | Prisma.DeviceDefaultArgs<ExtArgs>
+  sharedFiles?: boolean | Prisma.File$sharedFilesArgs<ExtArgs>
+  _count?: boolean | Prisma.FileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -817,6 +948,7 @@ export type $FilePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     sender: Prisma.$DevicePayload<ExtArgs>
+    sharedFiles: Prisma.$SharedFilePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1224,6 +1356,7 @@ export interface Prisma__FileClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   sender<T extends Prisma.DeviceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DeviceDefaultArgs<ExtArgs>>): Prisma.Prisma__DeviceClient<runtime.Types.Result.GetResult<Prisma.$DevicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  sharedFiles<T extends Prisma.File$sharedFilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.File$sharedFilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SharedFilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1660,6 +1793,30 @@ export type FileDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Files to delete.
    */
   limit?: number
+}
+
+/**
+ * File.sharedFiles
+ */
+export type File$sharedFilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SharedFile
+   */
+  select?: Prisma.SharedFileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SharedFile
+   */
+  omit?: Prisma.SharedFileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SharedFileInclude<ExtArgs> | null
+  where?: Prisma.SharedFileWhereInput
+  orderBy?: Prisma.SharedFileOrderByWithRelationInput | Prisma.SharedFileOrderByWithRelationInput[]
+  cursor?: Prisma.SharedFileWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SharedFileScalarFieldEnum | Prisma.SharedFileScalarFieldEnum[]
 }
 
 /**

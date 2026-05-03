@@ -53,7 +53,8 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Device: 'Device',
-  File: 'File'
+  File: 'File',
+  SharedFile: 'SharedFile'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -109,6 +110,17 @@ export const FileScalarFieldEnum = {
 } as const
 
 export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
+
+
+export const SharedFileScalarFieldEnum = {
+  accessKey: 'accessKey',
+  id: 'id',
+  fileId: 'fileId',
+  recipientId: 'recipientId',
+  expiresAt: 'expiresAt'
+} as const
+
+export type SharedFileScalarFieldEnum = (typeof SharedFileScalarFieldEnum)[keyof typeof SharedFileScalarFieldEnum]
 
 
 export const SortOrder = {

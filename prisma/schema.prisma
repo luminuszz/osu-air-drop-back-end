@@ -14,8 +14,9 @@ model User {
   password  String
   createdAt DateTime @default(now())
 
-  devices Device[]
-  files   File[]
+  devices     Device[]
+  files       File[]
+  sharedFiles SharedFile[]
 }
 
 model Device {
@@ -37,7 +38,7 @@ model File {
   originalName String
   mimeType     String
   size         Int
-  storagePath  String
+  storagePath  String @unique
 
   createdAt DateTime @default(now())
   isDeleted Boolean  @default(false)
@@ -45,8 +46,19 @@ model File {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  senderId String
-  sender   Device @relation("FilesSentByDevice", fields: [senderId], references: [id])
+  senderId    String
+  sender      Device       @relation("FilesSentByDevice", fields: [senderId], references: [id])
+  sharedFiles SharedFile[]
+}
+
+model SharedFile {
+  accessKey   String   @unique
+  id          String   @id @default(uuid())
+  fileId      String
+  file        File     @relation(fields: [fileId], references: [id])
+  recipientId String
+  recipient   User     @relation(fields: [recipientId], references: [id])
+  expiresAt   DateTime
 }
 
 enum DeviceType {
