@@ -50,10 +50,10 @@ COPY src ./src
 
 ENV CI="true"
 
+RUN pnpm approve-builds
+
 RUN pnpm run build
 
 EXPOSE 3000
-
-
 
 CMD ["/bin/sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
