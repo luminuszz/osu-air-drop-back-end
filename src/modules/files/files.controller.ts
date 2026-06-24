@@ -1,13 +1,16 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ZodValidationPipe } from "src/core/zod/zod-validation.pipe";
 import { UserDecoded } from "../auth/user-decoded.decorator";
-import { FilesService } from "./files.service";
+
 import {
 	type ConfirmUploadSchema,
 	confirmUploadSchema,
 	type MakeUploadRequestSchema,
 	makeUploadRequestSchema,
+	type ShareFileSchema,
+	shareFileSchema,
 } from "./schema";
+import { FilesService } from "./services/files.service";
 
 @Controller("files")
 export class FilesController {
@@ -53,9 +56,18 @@ export class FilesController {
 	}
 
 	@Get("/download/:fileId")
-	async getDownloadUrl(@Param("fileId") fileId: string) {
-		const url = await this.filesService.getDownloadUrl(fileId);
+	async getDownloadUrl(
+		@Param("fileId") fileId: string,
+		@UserDecoded("id") userId: string,
+	) {
+		const url = await this.filesService.getDownloadUrl(fileId, userId);
 
 		return { url };
 	}
+
+	@Post("share")
+	async shareFile(
+		@UserDecoded("id") userId: string,
+		@Body(new ZodValidationPipe(shareFileSchema)) body: ShareFileSchema,
+	) {}
 }

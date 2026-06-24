@@ -386,7 +386,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Device: 'Device',
-  File: 'File'
+  File: 'File',
+  SharedFile: 'SharedFile'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -402,7 +403,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "device" | "file"
+    modelProps: "user" | "device" | "file" | "sharedFile"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -628,6 +629,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SharedFile: {
+      payload: Prisma.$SharedFilePayload<ExtArgs>
+      fields: Prisma.SharedFileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SharedFileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SharedFileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload>
+        }
+        findFirst: {
+          args: Prisma.SharedFileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SharedFileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload>
+        }
+        findMany: {
+          args: Prisma.SharedFileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload>[]
+        }
+        create: {
+          args: Prisma.SharedFileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload>
+        }
+        createMany: {
+          args: Prisma.SharedFileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SharedFileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload>[]
+        }
+        delete: {
+          args: Prisma.SharedFileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload>
+        }
+        update: {
+          args: Prisma.SharedFileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload>
+        }
+        deleteMany: {
+          args: Prisma.SharedFileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SharedFileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SharedFileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload>[]
+        }
+        upsert: {
+          args: Prisma.SharedFileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SharedFilePayload>
+        }
+        aggregate: {
+          args: Prisma.SharedFileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSharedFile>
+        }
+        groupBy: {
+          args: Prisma.SharedFileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SharedFileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SharedFileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SharedFileCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -704,6 +779,17 @@ export const FileScalarFieldEnum = {
 } as const
 
 export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
+
+
+export const SharedFileScalarFieldEnum = {
+  accessKey: 'accessKey',
+  id: 'id',
+  fileId: 'fileId',
+  recipientId: 'recipientId',
+  expiresAt: 'expiresAt'
+} as const
+
+export type SharedFileScalarFieldEnum = (typeof SharedFileScalarFieldEnum)[keyof typeof SharedFileScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -902,6 +988,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   device?: Prisma.DeviceOmit
   file?: Prisma.FileOmit
+  sharedFile?: Prisma.SharedFileOmit
 }
 
 /* Types for Logging */

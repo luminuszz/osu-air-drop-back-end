@@ -56,3 +56,8 @@ export type Device = Prisma.DeviceModel
  * 
  */
 export type File = Prisma.FileModel
+/**
+ * Model SharedFile
+ * 
+ */
+export type SharedFile = Prisma.SharedFileModel

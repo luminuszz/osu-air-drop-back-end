@@ -64,10 +64,13 @@ export class R2StorageProvider implements StorageProvider, OnModuleInit {
 		};
 	}
 
-	async generateDownloadUrl(fileId: string): Promise<string> {
+	async generateDownloadUrl(fileId: string, download = false): Promise<string> {
 		const command = new GetObjectCommand({
 			Key: fileId,
 			Bucket: this.bucketName,
+			ResponseContentDisposition: download
+				? `attachment; filename="${fileId}"`
+				: undefined,
 		});
 
 		return getSignedUrl(this.s3Client, command, { expiresIn: 3600 });

@@ -14,3 +14,9 @@ export const confirmUploadSchema = z.object({
 });
 
 export type ConfirmUploadSchema = z.infer<typeof confirmUploadSchema>;
+
+export const shareFileSchema = z.object({
+	fileId: z.string(),
+});
+
+export type ShareFileSchema = z.infer<typeof shareFileSchema>;
